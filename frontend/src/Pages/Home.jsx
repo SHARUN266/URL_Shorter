@@ -37,7 +37,7 @@ export default function Home() {
   async function handleClick() {
     setLoading(true);
     try {
-      await axios.post("http://localhost:8080/shortUrl", text);
+      await axios.post("https://shorturl-oazu.onrender.com/shortUrl", text);
       setFlag(!flag);
       toast({
         title: `Your long Url converted into short url successfully!`,
@@ -63,8 +63,8 @@ export default function Home() {
   async function GetURL() {
     setLoading(true);
     try {
-      let { data } = await axios.get("http://localhost:8080/");
-      setShort("http://localhost:8080/" + data[data.length - 1].short);
+      let { data } = await axios.get("https://shorturl-oazu.onrender.com/");
+      setShort("https://shorturl-oazu.onrender.com/" + data[data.length - 1].short);
 
       setLoading(false);
     } catch (e) {
@@ -148,6 +148,7 @@ export default function Home() {
 
       <Button
         h="10%"
+        loadingText="Please wait..."
         isLoading={isLoading ? true : false}
         shadow={"md"}
         onClick={handleClick}
