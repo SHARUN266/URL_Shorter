@@ -2,30 +2,46 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const PORT = process.env.PORT || 8080;
-const cors=require("cors")
-
+const cors = require("cors");
+const shortId = require("shortid");
 const ShortUrl = require("./models/ShortUrl.Schema");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 app.get("/", async (req, res) => {
   let url = await ShortUrl.find();
   res.send(url);
 });
 
 app.post("/shortUrl", async (req, res) => {
-  const { fullURL, short,clicks } = req.body;
-  
+  const { fullURL, short, clicks } = req.body;
+
   try {
-    let Short=await ShortUrl.find({short:short})
     
-    if(Short.length>0){
-        return res.status(404).json("This URL already exists please try another one else you can leave empty.")
-    }else{
+    let Short = await ShortUrl.find({ short: short });
+    if (short == "") {
+      if (Short.length > 0) {
+        return res
+          .status(404)
+          .json(
+            "This URL already exists please try another one else you can leave empty."
+          );
+      } else {
+        let data = await ShortUrl.create({ fullURL, short: shortId.generate(), clicks });
+        res.status(200).json(data);
+      }
+    } else {
+      if (Short.length > 0) {
+        return res
+          .status(404)
+          .json(
+            "This URL already exists please try another one else you can leave empty."
+          );
+      } else {
         let data = await ShortUrl.create({ fullURL, short, clicks });
-    res.status(200).json(data);
+        res.status(200).json(data);
+      }
     }
-    
   } catch (e) {
     res.send(e);
   }

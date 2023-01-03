@@ -1,6 +1,6 @@
 const {Schema,model}=require("mongoose")
 
-const shortId=require('shortid')
+
 const URLModel=new Schema({
     fullURL:{
         type:String,
@@ -10,7 +10,7 @@ const URLModel=new Schema({
         type:String,
         required:true,
         unique: true,
-        // default:shortId.generate()
+        
     },
     clicks:{
         type:Number,
